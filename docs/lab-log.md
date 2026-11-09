@@ -61,3 +61,6 @@ Every error I hit, how I figured it out, and the fix.
 ## 12 - library written as child elements
 **Cause:** id, dir and includes are attributes, not child elements. I'd also never closed `<library>`. First draft before that had the path as text inside `<fileset>`.
 **Rule:** `<thing name="value"/>`, settings go inside the opening tag. The library id is a label I make up, the dataSource references it.
+
+## 13 - fileset dir included the filename
+**Fix:** dir is the folder only. includes names the file.

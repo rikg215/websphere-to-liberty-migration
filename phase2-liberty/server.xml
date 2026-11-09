@@ -7,6 +7,6 @@
         <feature>jndi-1.0</feature>
     </featureManager>
     <library id="postgresLib">
-        <fileset dir="/opt/drivers/postgres/postgresql-42.7.14.jar" includes="postgresql-42.7.14.jar"/>
+        <fileset dir="/opt/drivers/postgres/" includes="postgresql-42.7.14.jar"/>
     </library>
 </server>
