@@ -3,5 +3,7 @@
     <featureManager>
         <!--The following features are available in all editions of Liberty.-->
         <feature>jsp-2.2</feature>
+        <feature>jdbc-4.0</feature>
+        <feature>jndi-1.0</feature>
     </featureManager>
 </server>

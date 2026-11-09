@@ -52,3 +52,8 @@ Every error I hit, how I figured it out, and the fix.
 **Cause:** The table was in the `admin` database (prompt said `admin=#`), data source pointed somewhere else. Relation = table in Postgres.
 **Second problem:** Restarting the app didn't apply the change. The connection pool is server-scoped.
 **Fix:** databaseName: admin, Save, `podman restart was-server`. Restart keeps the container, only rm loses it.
+
+## 11 - Scanner missed JDBC and JNDI
+**Cause:** The scanner analyzes compiled classes. My DB code lives in a JSP, which only compiles at runtime, so the scanner never saw it. It only picked up jsp-2.2.
+**Fix:** Reviewed the app myself. jsp-2.2 is Java EE 6, so I added the EE6 versions: jdbc-4.0, jndi-1.0.
+**Lesson:** The scanner is only as good as what it can see.
