@@ -84,3 +84,10 @@ Every error I hit, how I figured it out, and the fix.
 **Symptom:** `dial tcp 192.168.0.200:5000: connect: connection refused`.
 **Cause:** Registry is on 192.168.0.210. .200 is my desktop.
 **Fix:** Retagged to 192.168.0.210:5000/labapp:1.0 and pushed with --tls-verify=false (registry:2 serves plain HTTP). Opened 5000 to the LAN on ctrl-ansible-01 and 8082 to the LAN on the podman VM so pods can reach Postgres. In prod I'd scope that to the node IPs.
+
+## 19 - NameNotFoundException: Intermediate context does not exist: jdbc/labapp
+**Symptom:** Error 500. Startup logs clean, features installed, app started.
+**Cause:** `<jbdcDriver>`, letters swapped. Liberty silently ignores elements it doesn't recognize, so the data source had no driver and never registered in JNDI. "jdbc" context didn't exist at all.
+**How I found it:** `kubectl exec <pod> -- cat /config/server.xml` to check the config actually in the pod.
+**Fix:** jdbcDriver, rebuilt as 1.1 instead of reusing 1.0 so no node could serve a cached old image.
+**Result:** Live data from Postgres across all three replicas.
