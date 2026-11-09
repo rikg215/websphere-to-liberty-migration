@@ -75,3 +75,7 @@ Every error I hit, how I figured it out, and the fix.
 ## 16 - httpEndpoint wrong
 **Cause:** host is the interface to listen on, not a URL path. Attribute is httpPort, not port. A custom id makes a second endpoint instead of overriding the default.
 **Fix:** id="defaultHttpEndpoint" host="*" httpPort="9080". 9080 is Liberty's default and what the image exposes.
+
+## 17 - Containerfile copied from the docs too literally
+**Cause:** Kept IBM's interim-fixes line (no such folder). Sent the WAR to dropins while server.xml declares it in apps, those are two different deploy methods. Never copied the driver jar in.
+**Fix:** Removed interim-fixes, WAR to /config/apps/, driver to the fileset dir.
