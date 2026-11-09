@@ -25,3 +25,10 @@ podman cp postgresql-42.7.14.jar was-server:/opt/driver/postgres/
   - serverName: postgres
   - portNumber: 5432
   - databaseName: postgres
+
+## Build and deploy the WAR
+cd app && jar cvf labapp.war index.jsp && jar tf labapp.war
+Applications > New application > New Enterprise Application > Fast Path
+- Directory to install application: blank (default)
+- Context root: /labapp
+Save, then start it under WebSphere enterprise applications.

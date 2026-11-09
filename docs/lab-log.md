@@ -37,3 +37,7 @@ Every error I hit, how I figured it out, and the fix.
 **Second problem:** `podman network connect` fails with `"pasta" is not supported`. Network mode is set at creation.
 **Fix:** Burned it all down for another rep. Created a network, recreated both containers on it, and used container-name DNS: serverName postgres, port 5432 (container port, not the published one). Added named volumes this time. WebSphere's volume goes on the AppSrv01 profile directory because that's where all the console config lives.
 **Note:** -h only sets the container's own hostname. Other containers find it by --name. Kept them the same so WebSphere's stored host name stays stable across rebuilds.
+
+## 08 - Install directory vs context root
+**Cause:** I put /labapp in "Directory to install application". That's a filesystem path, and `was` can't write to /.
+**Fix:** Left it blank. Context root is set on a later screen.
