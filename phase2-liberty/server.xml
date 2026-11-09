@@ -11,7 +11,7 @@
     </library>
     <dataSource id="postgresDs" jndiName="jdbc/labapp">
         <jdbcDriver libraryRef="postgresLib"/>
-        <properties.postgresql serverName="192.168.0.112" portNumber="8082" databaseName="admin" user="admin" password="${env.DB_PASSWORD}"/>
+        <properties.postgresql serverName="${env.DB_HOST}" portNumber="${env.DB_PORT}" databaseName="admin" user="admin" password="${env.DB_PASSWORD}"/>
     </dataSource>
     <webApplication id="labapp" name="labapp" contextRoot="/labapp" location="labapp.war"/>
     <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="9080"/>
