@@ -64,3 +64,7 @@ Every error I hit, how I figured it out, and the fix.
 
 ## 13 - fileset dir included the filename
 **Fix:** dir is the folder only. includes names the file.
+
+## 14 - dataSource syntax
+**Cause:** `<datasource>` lowercase (XML is case sensitive), properties line never closed with `/>`, no `</dataSource>`.
+**Also:** Swapped the hardcoded password for `${env.DB_PASSWORD}` so it can come from a k8s Secret.
