@@ -16,10 +16,12 @@ spec:
         app: labapp
     spec:
       containers:
-      - image: 192.168.0.210:5000/labapp:1.1
+      - image: 192.168.0.210:5000/labapp:1.2
         name: labapp
         ports:
         - containerPort: 9080
         envFrom:
         - secretRef:
             name: labapp
+        - configMapRef:
+            name: db-connect
