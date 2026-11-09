@@ -101,3 +101,11 @@ Every error I hit, how I figured it out, and the fix.
 **What happened:** Nothing broke. restricted-v2 ignores the image's USER 1001 and runs as a random UID from the project's range, but always with group 0. My Containerfile chowns everything 1001:0, so the random UID gets in through group permissions. That's Red Hat's documented pattern (group 0, chmod g=u). I didn't bypass the SCC, I complied with it.
 **Why it's more secure:** Group 0 isn't root, no UID 0, no capabilities. Each project gets its own UID range plus SELinux labels, so a breakout lands as an unprivileged UID that owns nothing and can't touch other projects' files. Plain kubeadm runs whatever user the image says, root included.
 **Check:** `oc exec <pod> -- id`
+
+## 22 - "Create PVC" upload form failed with my .sql
+**Cause:** "With Data upload form" is OpenShift Virtualization's Containerized Data Importer. It loads VM disk images (qcow2, iso) into a Block-mode volume. A SQL dump isn't a disk image.
+**Fix:** "With Form" is the normal empty PVC. And a .sql dump isn't something you put on disk anyway, it's commands Postgres has to execute.
+
+## 23 - Template defaulted to Postgres 10
+**Cause:** Default image version was 10-el8, long out of support, and older than my source DB.
+**Fix:** Picked a newer version. Restore into the same or newer major version.
