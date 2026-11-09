@@ -45,3 +45,10 @@ Every error I hit, how I figured it out, and the fix.
 ## 09 - Never published 9080
 **Cause:** Published ports are set at creation. Stop/start doesn't add them.
 **Fix:** Recreated was-server with -p 9080:9080. The profile volume kept all my console config, so nothing was lost. Opened 9080 in firewalld for the LAN.
+
+## 10 - relation "websphere" does not exist
+**Symptom:** Error 500, PSQLException, relation does not exist.
+**Good news:** That error came from Postgres itself, so the whole chain worked. Browser -> WebSphere -> JNDI -> data source -> driver -> network -> DB.
+**Cause:** The table was in the `admin` database (prompt said `admin=#`), data source pointed somewhere else. Relation = table in Postgres.
+**Second problem:** Restarting the app didn't apply the change. The connection pool is server-scoped.
+**Fix:** databaseName: admin, Save, `podman restart was-server`. Restart keeps the container, only rm loses it.

@@ -24,7 +24,7 @@ podman cp postgresql-42.7.14.jar was-server:/opt/driver/postgres/
 - Custom properties:
   - serverName: postgres
   - portNumber: 5432
-  - databaseName: postgres
+  - databaseName: admin
 
 ## Build and deploy the WAR
 cd app && jar cvf labapp.war index.jsp && jar tf labapp.war
