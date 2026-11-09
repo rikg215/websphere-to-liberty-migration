@@ -79,3 +79,8 @@ Every error I hit, how I figured it out, and the fix.
 ## 17 - Containerfile copied from the docs too literally
 **Cause:** Kept IBM's interim-fixes line (no such folder). Sent the WAR to dropins while server.xml declares it in apps, those are two different deploy methods. Never copied the driver jar in.
 **Fix:** Removed interim-fixes, WAR to /config/apps/, driver to the fileset dir.
+
+## 18 - Push refused to my registry
+**Symptom:** `dial tcp 192.168.0.200:5000: connect: connection refused`.
+**Cause:** Registry is on 192.168.0.210. .200 is my desktop.
+**Fix:** Retagged to 192.168.0.210:5000/labapp:1.0 and pushed with --tls-verify=false (registry:2 serves plain HTTP). Opened 5000 to the LAN on ctrl-ansible-01 and 8082 to the LAN on the podman VM so pods can reach Postgres. In prod I'd scope that to the node IPs.

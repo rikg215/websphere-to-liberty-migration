@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: labapp
+  name: labapp
+  namespace: devops-bootcamp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: labapp
+  template:
+    metadata:
+      labels:
+        app: labapp
+    spec:
+      containers:
+      - image: 192.168.0.210:5000/labapp:1.0
+        name: labapp
+        ports:
+        - containerPort: 9080
+        envFrom:
+        - secretRef:
+            name: labapp
