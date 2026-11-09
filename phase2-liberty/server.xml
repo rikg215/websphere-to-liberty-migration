@@ -14,5 +14,5 @@
         <properties.postgresql serverName="192.168.0.112" portNumber="8082" databaseName="admin" user="admin" password="${env.DB_PASSWORD}"/>
     </dataSource>
     <webApplication id="labapp" name="labapp" contextRoot="/labapp" location="labapp.war"/>
-    <httpEndpoint id="httpLabapp" host="/labapp" port="8080"/>
+    <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="9080"/>
 </server>

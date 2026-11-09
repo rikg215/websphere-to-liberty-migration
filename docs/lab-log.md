@@ -71,3 +71,7 @@ Every error I hit, how I figured it out, and the fix.
 
 ## 15 - webApplication not closed
 **Fix:** Single-line elements end with `/>`.
+
+## 16 - httpEndpoint wrong
+**Cause:** host is the interface to listen on, not a URL path. Attribute is httpPort, not port. A custom id makes a second endpoint instead of overriding the default.
+**Fix:** id="defaultHttpEndpoint" host="*" httpPort="9080". 9080 is Liberty's default and what the image exposes.
