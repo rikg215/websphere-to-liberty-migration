@@ -6,4 +6,10 @@
         <feature>jdbc-4.0</feature>
         <feature>jndi-1.0</feature>
     </featureManager>
+    <library>
+        <id></id>
+        <fileset>
+            <dir>/opt/drivers/postgres/postgresql-42.7.14.jar</dir>
+            <includes>postgresql-42.7.14.jar</includes>
+        </fileset>
 </server>
