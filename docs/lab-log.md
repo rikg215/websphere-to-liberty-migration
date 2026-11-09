@@ -91,3 +91,13 @@ Every error I hit, how I figured it out, and the fix.
 **How I found it:** `kubectl exec <pod> -- cat /config/server.xml` to check the config actually in the pod.
 **Fix:** jdbcDriver, rebuilt as 1.1 instead of reusing 1.0 so no node could serve a cached old image.
 **Result:** Live data from Postgres across all three replicas.
+
+## 20 - Sandbox can't see my homelab
+**Cause:** Developer Sandbox runs in Red Hat's cloud. My registry and DB are on my LAN.
+**Fix:** Pushed the image to my private registry and added a dockerconfigjson pull secret. App was up in about 30 minutes.
+
+## 21 - No SCC errors (and why)
+**Expected:** Problems with OpenShift's random UID.
+**What happened:** Nothing broke. restricted-v2 ignores the image's USER 1001 and runs as a random UID from the project's range, but always with group 0. My Containerfile chowns everything 1001:0, so the random UID gets in through group permissions. That's Red Hat's documented pattern (group 0, chmod g=u). I didn't bypass the SCC, I complied with it.
+**Why it's more secure:** Group 0 isn't root, no UID 0, no capabilities. Each project gets its own UID range plus SELinux labels, so a breakout lands as an unprivileged UID that owns nothing and can't touch other projects' files. Plain kubeadm runs whatever user the image says, root included.
+**Check:** `oc exec <pod> -- id`
