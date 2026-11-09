@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: labapp
+  name: labapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: labapp
+  template:
+    metadata:
+      labels:
+        app: labapp
+    spec:
+      imagePullSecrets:
+      - name: rik215-registry
+      containers:
+      - image: <your-registry>/labapp:1.2
+        name: labapp
+        ports:
+        - containerPort: 9080
+        env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql
+              key: database-password
+        envFrom:
+        - configMapRef:
+            name: db-connect

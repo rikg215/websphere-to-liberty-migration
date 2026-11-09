@@ -118,3 +118,9 @@ Every error I hit, how I figured it out, and the fix.
 **Symptom:** `invalid command \restrict`, `\unrestrict`, and `unrecognized configuration parameter "transaction_timeout"`.
 **Cause:** Dump came from a newer Postgres than the target (15). Newer pg_dump adds a \restrict guard and newer session settings the old psql/server don't know.
 **Result:** Only session settings failed. CREATE TABLE, COPY 1 and setval all succeeded. Worked because the schema is trivial, a real schema could fail for real. Restore into same or newer.
+
+## 26 - envFrom vs secretKeyRef
+**Question:** Can I envFrom the template's Secret?
+**Answer:** No. envFrom imports keys with their names as-is: database-password, database-user, database-name. server.xml wants DB_PASSWORD, and hyphens make bad env var names.
+**Rule:** envFrom when keys already match what the app expects (my Phase 2 Secret). secretKeyRef when I need to map a key to a new name.
+**Note:** Same project, so DB_HOST is just the Service name. Cross-project would need postgresql.<project>.svc.cluster.local.

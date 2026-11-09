@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-connect
+data:
+  DB_HOST: postgresql
+  DB_PORT: '"5432"'
