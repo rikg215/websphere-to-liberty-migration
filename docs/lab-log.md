@@ -57,3 +57,7 @@ Every error I hit, how I figured it out, and the fix.
 **Cause:** The scanner analyzes compiled classes. My DB code lives in a JSP, which only compiles at runtime, so the scanner never saw it. It only picked up jsp-2.2.
 **Fix:** Reviewed the app myself. jsp-2.2 is Java EE 6, so I added the EE6 versions: jdbc-4.0, jndi-1.0.
 **Lesson:** The scanner is only as good as what it can see.
+
+## 12 - library written as child elements
+**Cause:** id, dir and includes are attributes, not child elements. I'd also never closed `<library>`. First draft before that had the path as text inside `<fileset>`.
+**Rule:** `<thing name="value"/>`, settings go inside the opening tag. The library id is a label I make up, the dataSource references it.
