@@ -9,4 +9,7 @@
     <library id="postgresLib">
         <fileset dir="/opt/drivers/postgres/" includes="postgresql-42.7.14.jar"/>
     </library>
+    <datasource id="postgresDs" jndiName="jdbc/labapp">
+        <jbdcDriver libraryRef="postgresLib"/>
+        <properties.postgresql serverName="192.168.0.112" portNumber="8082" databaseName="admin" user="admin" password="REDACTED"
 </server>
