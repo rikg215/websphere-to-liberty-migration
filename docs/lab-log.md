@@ -16,3 +16,13 @@ Every error I hit, how I figured it out, and the fix.
 **Symptom:** `mkdir: cannot create directory: Permission denied`, and no sudo in the container.
 **Cause:** The WebSphere image runs as the `was` user.
 **Fix:** `podman exec -u root`. Whatever root creates still has to be readable by `was`.
+
+## 04 - InstantiationException: GenericDataStoreHelper
+**Symptom:** Test connection failed with `java.lang.InstantiationException: com.ibm.websphere.rsadapter.GenericDataStoreHelper`.
+**Cause:** I put WebSphere's helper class in the provider's Implementation class field. The trace showed newInstance() being called on the helper, and that only happens on whatever's in that field.
+**Rule:** Provider -> vendor's driver class. Data source -> WebSphere's helper class.
+**How to find the class yourself:** pgjdbc docs, or `unzip -l postgresql-42.7.14.jar | grep -i datasource`.
+
+## 05 - Class path had a variable AND an absolute path
+**Cause:** `${User-defined_JDBC_DRIVER_PATH}/opt/driver/...` stacks two paths.
+**Fix:** Use one or the other. Absolute path, or a WebSphere variable set to the folder plus the filename.
