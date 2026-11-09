@@ -41,3 +41,7 @@ Every error I hit, how I figured it out, and the fix.
 ## 08 - Install directory vs context root
 **Cause:** I put /labapp in "Directory to install application". That's a filesystem path, and `was` can't write to /.
 **Fix:** Left it blank. Context root is set on a later screen.
+
+## 09 - Never published 9080
+**Cause:** Published ports are set at creation. Stop/start doesn't add them.
+**Fix:** Recreated was-server with -p 9080:9080. The profile volume kept all my console config, so nothing was lost. Opened 9080 in firewalld for the LAN.
