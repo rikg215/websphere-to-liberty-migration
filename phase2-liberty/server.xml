@@ -13,5 +13,5 @@
         <jbdcDriver libraryRef="postgresLib"/>
         <properties.postgresql serverName="192.168.0.112" portNumber="8082" databaseName="admin" user="admin" password="${env.DB_PASSWORD}"/>
     </dataSource>
-    <webApplication id="labapp" name="labapp" contextRoot="/labapp" location="labapp.war"
+    <webApplication id="labapp" name="labapp" contextRoot="/labapp" location="labapp.war"/>
 </server>
