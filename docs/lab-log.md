@@ -11,3 +11,8 @@ Every error I hit, how I figured it out, and the fix.
 **Symptom:** `syntax error at or near "CREATE"`, LINE 3.
 **Cause:** Two things. The prompt was `-#`, meaning psql was still holding unfinished input from earlier lines. And CREATE TABLE needs column definitions in parentheses, a name alone isn't valid.
 **Fix:** `\r` clears the buffer. Every statement ends with `;`. Defined `id SERIAL PRIMARY KEY` plus a column.
+
+## 03 - Permission denied creating the driver folder
+**Symptom:** `mkdir: cannot create directory: Permission denied`, and no sudo in the container.
+**Cause:** The WebSphere image runs as the `was` user.
+**Fix:** `podman exec -u root`. Whatever root creates still has to be readable by `was`.
