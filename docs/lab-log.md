@@ -124,3 +124,9 @@ Every error I hit, how I figured it out, and the fix.
 **Answer:** No. envFrom imports keys with their names as-is: database-password, database-user, database-name. server.xml wants DB_PASSWORD, and hyphens make bad env var names.
 **Rule:** envFrom when keys already match what the app expects (my Phase 2 Secret). secretKeyRef when I need to map a key to a new name.
 **Note:** Same project, so DB_HOST is just the Service name. Cross-project would need postgresql.<project>.svc.cluster.local.
+
+## 27 - NameNotFoundException again
+**Symptom:** Same `Intermediate context does not exist: jdbc/labapp` as Phase 2.
+**How I found it:** `oc exec <pod> -- env | grep DB_` showed `DB_PORT="5432"`. env doesn't print quotes, so they were part of the value.
+**Cause:** I set the ConfigMap in form mode and quoted the value like I would in YAML. In YAML quotes are syntax and get stripped. In the form everything is already a string, so the quotes became literal characters. Liberty got "5432" with quote marks, not a valid port, so the dataSource was skipped. Same silent failure pattern as jbdcDriver.
+**Fix:** Plain 5432 in the form, then Restart rollout (env from a ConfigMap is only read at container start).

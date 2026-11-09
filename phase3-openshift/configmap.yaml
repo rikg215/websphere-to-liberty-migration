@@ -4,4 +4,4 @@ metadata:
   name: db-connect
 data:
   DB_HOST: postgresql
-  DB_PORT: '"5432"'
+  DB_PORT: "5432"
