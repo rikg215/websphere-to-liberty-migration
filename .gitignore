@@ -1,0 +1,5 @@
+*.war
+*.jar
+wamt/
+k8s/secret.yaml
+.env
