@@ -16,3 +16,14 @@ Used the PostgreSQL (persistent) template from the catalog. Red Hat's image is b
 - Image version: 15 (not the 10-el8 default)
 
 Template creates a DeploymentConfig, PVC, Secret and Service. DeploymentConfigs are deprecated in newer OpenShift in favor of Deployments.
+
+## Data migration (dump and restore, not a volume copy)
+A Postgres data directory is a binary format tied to the server version. Real migrations move data, not disk files.
+
+# on the podman VM
+podman exec postgres pg_dump -U admin -d admin > db.sql
+
+# into OpenShift
+oc cp db.sql <postgres-pod>:/tmp/db.sql
+oc exec <postgres-pod> -- psql -U admin -d admin -f /tmp/db.sql
+oc exec <postgres-pod> -- psql -U admin -d admin -c 'SELECT * FROM websphere;'

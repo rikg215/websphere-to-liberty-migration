@@ -109,3 +109,12 @@ Every error I hit, how I figured it out, and the fix.
 ## 23 - Template defaulted to Postgres 10
 **Cause:** Default image version was 10-el8, long out of support, and older than my source DB.
 **Fix:** Picked a newer version. Restore into the same or newer major version.
+
+## 24 - oc cp: Permission denied
+**Cause:** I copied into /. The pod runs as a random non-root UID, which can't write to the filesystem root.
+**Fix:** Copy to /tmp.
+
+## 25 - Restore threw errors but the data landed
+**Symptom:** `invalid command \restrict`, `\unrestrict`, and `unrecognized configuration parameter "transaction_timeout"`.
+**Cause:** Dump came from a newer Postgres than the target (15). Newer pg_dump adds a \restrict guard and newer session settings the old psql/server don't know.
+**Result:** Only session settings failed. CREATE TABLE, COPY 1 and setval all succeeded. Worked because the schema is trivial, a real schema could fail for real. Restore into same or newer.
