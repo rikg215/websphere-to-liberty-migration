@@ -22,6 +22,6 @@ podman cp postgresql-42.7.14.jar was-server:/opt/driver/postgres/
 - Component-managed alias: DefaultNode01/postgres
 - Container-managed alias: DefaultNode01/postgres
 - Custom properties:
-  - serverName: localhost
+  - serverName: 192.168.0.112
   - portNumber: 8082
   - databaseName: postgres

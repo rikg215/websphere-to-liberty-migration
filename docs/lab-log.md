@@ -26,3 +26,7 @@ Every error I hit, how I figured it out, and the fix.
 ## 05 - Class path had a variable AND an absolute path
 **Cause:** `${User-defined_JDBC_DRIVER_PATH}/opt/driver/...` stacks two paths.
 **Fix:** Use one or the other. Absolute path, or a WebSphere variable set to the folder plus the filename.
+
+## 06 - localhost inside a container
+**Cause:** Inside the WebSphere container, localhost is the WebSphere container. No Postgres in there.
+**Fix attempt:** VM IP 192.168.0.112 and the published port 8082 (left side of -p is the host side).
