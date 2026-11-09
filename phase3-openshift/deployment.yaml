@@ -30,3 +30,17 @@ spec:
         envFrom:
         - configMapRef:
             name: db-connect
+        startupProbe:
+          tcpSocket:
+            port: 9080
+          periodSeconds: 5
+          failureThreshold: 12
+        livenessProbe:
+          tcpSocket:
+            port: 9080
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /labapp/
+            port: 9080
+          periodSeconds: 10

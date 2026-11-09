@@ -130,3 +130,10 @@ Every error I hit, how I figured it out, and the fix.
 **How I found it:** `oc exec <pod> -- env | grep DB_` showed `DB_PORT="5432"`. env doesn't print quotes, so they were part of the value.
 **Cause:** I set the ConfigMap in form mode and quoted the value like I would in YAML. In YAML quotes are syntax and get stripped. In the form everything is already a string, so the quotes became literal characters. Liberty got "5432" with quote marks, not a valid port, so the dataSource was skipped. Same silent failure pattern as jbdcDriver.
 **Fix:** Plain 5432 in the form, then Restart rollout (env from a ConfigMap is only read at container start).
+
+## 28 - Probes
+**Liveness:** First instinct was HTTP GET on /. Works today because Liberty serves its welcome page there (200). But production usually disables that page since it advertises the exact Liberty version, and then / goes 404 and liveness restart-loops healthy pods. Went with TCP 9080: "is Liberty listening," nothing more.
+**Readiness:** HTTP GET /labapp/. It hits the DB, which is what I want for readiness. DB down = pods pulled from the Service, not restarted. Liveness must never touch the DB or a DB blip restarts every app pod.
+**Startup:** TCP 9080 so liveness doesn't kill Liberty while it's still booting (~5s).
+**Test:** Deleted a pod. New one stayed not-ready until /labapp/ passed while the Route kept serving from the others.
+**Next:** mpHealth gives real /health/ready and /health/live, but MicroProfile doesn't mix with my Java EE 6 features. That's a platform upgrade.
