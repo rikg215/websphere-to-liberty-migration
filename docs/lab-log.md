@@ -30,3 +30,10 @@ Every error I hit, how I figured it out, and the fix.
 ## 06 - localhost inside a container
 **Cause:** Inside the WebSphere container, localhost is the WebSphere container. No Postgres in there.
 **Fix attempt:** VM IP 192.168.0.112 and the published port 8082 (left side of -p is the host side).
+
+## 07 - Connection refused to 192.168.0.112:8082
+**Symptom:** `Connection to 192.168.0.112:8082 refused`, but `nc -zv 192.168.0.112 8082` from the VM connected fine.
+**Cause:** Rootless podman's default network mode (pasta) gives the container a copy of the host's IP, so it was connecting to itself.
+**Second problem:** `podman network connect` fails with `"pasta" is not supported`. Network mode is set at creation.
+**Fix:** Burned it all down for another rep. Created a network, recreated both containers on it, and used container-name DNS: serverName postgres, port 5432 (container port, not the published one). Added named volumes this time. WebSphere's volume goes on the AppSrv01 profile directory because that's where all the console config lives.
+**Note:** -h only sets the container's own hostname. Other containers find it by --name. Kept them the same so WebSphere's stored host name stays stable across rebuilds.
